@@ -2,6 +2,17 @@ import socket
 import threading
 import time
 import queue
+import logging
+
+# ==================== LOGGING ==================== #
+logging.basicConfig(
+    level=logging.INFO,  # Nível mínimo de log
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("servidor.log", encoding="utf-8"),  # salva em arquivo
+        logging.StreamHandler()  # mostra no terminal
+    ]
+)
 
 # ==================== SERVIDOR ==================== #
 
@@ -12,12 +23,12 @@ def Cliente(cliente, endereco):
         pedido = cliente.recv(1024).decode()
 
         if not pedido:
-            print(f"Cliente {endereco} não enviou nenhum pedido.")
+            logging.info(f"Cliente {endereco} não enviou nenhum pedido.")
             return
 
         with lock:
             buffer.put(pedido)
-            print(f"Cliente {endereco} fez um pedido: {pedido}")
+            logging.info(f"Cliente {endereco} fez um pedido: {pedido}")
             cliente.send("Seu pedido foi adicionado à fila.".encode())
             time.sleep(2)
 
@@ -27,9 +38,9 @@ def Cliente(cliente, endereco):
 def Cozinheiro(cozinheiro):
     while True:
         pedido = buffer.get()
-        print(f"Cozinheiro {cozinheiro} preparando pedido: {pedido}")
+        logging.info(f"Cozinheiro {cozinheiro} preparando pedido: {pedido}")
         time.sleep(2)
-        print(f"Cozinheiro {cozinheiro} terminou o pedido: {pedido}")
+        logging.info(f"Cozinheiro {cozinheiro} terminou o pedido: {pedido}")
         buffer.task_done()
         
 
@@ -41,7 +52,7 @@ buffer = queue.Queue(maxsize=5)
 soquete_servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 soquete_servidor.bind(('localhost', 1024))
 soquete_servidor.listen(5)
-print("Servidor local rodando na porta 1024")
+logging.info("Servidor local rodando na porta 1024")
 
 #Criação dos cozinheiros
 for i in range(2):
