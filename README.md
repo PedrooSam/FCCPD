@@ -20,7 +20,7 @@ O foco é demonstrar **concorrência** (múltiplos clientes atendidos pelo servi
 ---
 
 ##  Como Rodar
-Para Rodar basta so rodar primeiro o arquivo python do Servidor e logo depois o do Cliente
+Para Rodar basta so rodar primeiro o arquivo python do Servidor e logo depois o do Cliente em terminais separados
 
 ---
 
@@ -28,4 +28,5 @@ Para Rodar basta so rodar primeiro o arquivo python do Servidor e logo depois o 
 Nossa conexão simula uma lanchonete que tem clientes, uma fila de pedidos e os cozinheiros Nela temos:
 - Cliente que atua como o cliente da lanchonete
 - Servidor que atua como a fila de pedidos
+- Threads locais no servidor atuam como cozinheiros
   
